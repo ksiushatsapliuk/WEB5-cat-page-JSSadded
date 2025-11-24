@@ -1,18 +1,19 @@
 // ============================================
-// ЗАВДАННЯ 1: Поміняти місцями тексти "2" та "6"
+// ЗАВДАННЯ 1: Поміняти місцями лише тексти в .item2 і .item6
 // ============================================
 function swapTexts() {
   const item2 = document.querySelector('.item2');
   const item6 = document.querySelector('.item6');
-  
-  if (item2 && item6) {
-    // Зберігаємо innerHTML обох блоків
-    const temp2 = item2.innerHTML;
-    const temp6 = item6.innerHTML;
-    
-    // Міняємо місцями
-    item2.innerHTML = temp6;
-    item6.innerHTML = temp2;
+  if (!item2 || !item6) return;
+
+  // Знайдемо перший текстовий елемент у кожному блоці (h1, h2, p, span, div)
+  const textElement2 = item2.querySelector('h1, h2, p, span, div');
+  const textElement6 = item6.querySelector('h1, h2, p, span, div');
+
+  if (textElement2 && textElement6) {
+    const tempText = textElement2.textContent;
+    textElement2.textContent = textElement6.textContent;
+    textElement6.textContent = tempText;
   }
 }
 
@@ -133,7 +134,6 @@ function setupBorderColorChanger() {
     colorPicker.value = savedColor;
   }
   
-  // Виконуємо зміну на focus і input для миттєвого ефекту
   colorPicker.addEventListener('focus', function() {
     const color = this.value;
     applyBorderColor(color);
@@ -253,19 +253,17 @@ function addImageToBlock1Temp() {
   alert('Зображення додано в блок 1 (тимчасово)');
 }
 
-// Нова реалізація кнопки 2: Зберігаємо З ВСІХ зображень блоку 1 у localStorage + додаємо в блок 4
+// Кнопка 2: Зберегти ВСІ зображення з блоку 1 у localStorage + додати в блок 4
 function saveBlock1ImagesToLocalStorageAndBlock4() {
   const navbar = document.querySelector('.navbar');
   if (!navbar) return;
   
-  // Витягуємо ВСІ зображення, додані у блок 1, які мають data-image-id
   const imagesInBlock1 = navbar.querySelectorAll('.added-image-block1 img');
   if (imagesInBlock1.length === 0) {
     alert('У блоці 1 немає зображень для збереження.');
     return;
   }
   
-  // Формуємо масив об'єктів {url, alt, id}
   const imagesData = [];
   imagesInBlock1.forEach(img => {
     const parentDiv = img.parentElement;
@@ -279,24 +277,20 @@ function saveBlock1ImagesToLocalStorageAndBlock4() {
     }
   });
   
-  // Зберігаємо у localStorage (перезаписуємо)
   localStorage.setItem('addedImages', JSON.stringify(imagesData));
   
-  // Очищаємо блок 4 перед додаванням
   const item4 = document.querySelector('.item4');
   if (item4) {
-    // Видаляємо всі зображення, додані раніше
     const oldImages = item4.querySelectorAll('.added-image-block4');
     oldImages.forEach(e => e.remove());
     
-    // Додаємо оновлені зображення в блок 4
     imagesData.forEach(imgData => displayImageInBlock4(imgData));
   }
   
   alert('Усі зображення з блоку 1 збережено в localStorage та додано у блок 4!');
 }
 
-// Кнопка 3: Видаляємо всі зображення з localStorage та з блоку 1
+// Кнопка 3: Видалити всі зображення з localStorage і блоку 1
 function clearImagesFromBlock1() {
   localStorage.removeItem('addedImages');
   
@@ -367,7 +361,6 @@ function displayImageInBlock4(imageData) {
   item4.appendChild(imgDiv);
 }
 
-// Завантажуємо всі зображення при ініціалізації
 function loadImagesFromLocalStorage() {
   const images = JSON.parse(localStorage.getItem('addedImages') || '[]');
   
