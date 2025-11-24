@@ -20,14 +20,10 @@ function swapTexts() {
 // ЗАВДАННЯ 2: Обчислення площі ромба
 // ============================================
 function calculateRhombusArea() {
-  // Діагоналі ромба (в умовних одиницях)
   const diagonal1 = 12;
   const diagonal2 = 8;
-  
-  // Формула площі ромба: S = (d1 * d2) / 2
   const area = (diagonal1 * diagonal2) / 2;
   
-  // Виводимо результат в кінці блоку item5
   const item5 = document.querySelector('.item5');
   if (item5) {
     const resultDiv = document.createElement('div');
@@ -36,7 +32,7 @@ function calculateRhombusArea() {
     resultDiv.style.background = 'rgba(26, 13, 38, 0.1)';
     resultDiv.style.borderRadius = '6px';
     resultDiv.style.border = '2px solid rgba(26, 13, 38, 0.2)';
-    resultDiv.innerHTML = `<strong>Площа ромба:</strong> При діагоналях d₁ = ${diagonal1} та d₂ = ${diagonal2}, площа S = ${area} кв. од.`;
+    resultDiv.innerHTML = `<strong>Площа ромба:</strong> При діагоналях d\u2081 = ${diagonal1} та d\u2082 = ${diagonal2}, площа S = ${area} кв. од.`;
     item5.appendChild(resultDiv);
   }
 }
@@ -49,16 +45,13 @@ function checkCookies() {
   const resultCookie = cookies.find(c => c.startsWith('minMaxResult='));
   
   if (resultCookie) {
-    // а) При оновленні виводиться діалог з питанням
     const result = decodeURIComponent(resultCookie.split('=')[1]);
     const shouldDelete = confirm(`Збережені дані в cookies:\n${result}\n\nВидалити ці дані з cookies?`);
     
     if (shouldDelete) {
-      // б) При підтвердженні - видаляємо cookies і оновлюємо сторінку
       document.cookie = 'minMaxResult=; max-age=0; path=/';
       location.reload();
     } else {
-      // в) При відмові - інформуємо про наявність cookies
       alert('Дані залишаються в cookies.\n\nДля нового розрахунку необхідно перезавантажити веб-сторінку або видалити cookies.');
       return true; // НЕ показувати форму
     }
@@ -85,7 +78,7 @@ function createMinMaxForm() {
     <input type="text" id="numbersInput" placeholder="наприклад: 5, 12, 3, 45, 7, 23, 1, 89, 34, 15" 
            style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid #1A0D26; border-radius: 6px; font-size: 14px;">
     <button id="calculateBtn" style="padding: 12px 24px; background: #1A0D26; color: white; border: none; 
-            border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 14px;">
+          border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 14px;">
       Обчислити
     </button>
   `;
@@ -109,13 +102,10 @@ function calculateMinMax() {
   
   const result = `Мінімальне число: ${min}\nМаксимальне число: ${max}`;
   
-  // Зберігаємо в cookies (термін дії - 24 години)
   document.cookie = `minMaxResult=${encodeURIComponent(result)}; max-age=86400; path=/`;
   
-  // Виводимо результат в діалоговому вікні
   alert(result);
   
-  // Перезавантажуємо сторінку
   location.reload();
 }
 
@@ -123,7 +113,6 @@ function calculateMinMax() {
 // ЗАВДАННЯ 4: Зміна кольору рамок з localStorage
 // ============================================
 function setupBorderColorChanger() {
-  // Створюємо інпут для вибору кольору в item3
   const item3 = document.querySelector('.item3');
   if (!item3) return;
   
@@ -138,21 +127,19 @@ function setupBorderColorChanger() {
   
   const colorPicker = document.getElementById('borderColorPicker');
   
-  // Завантажуємо збережений колір при завантаженні сторінки
   const savedColor = localStorage.getItem('borderColor');
   if (savedColor) {
     applyBorderColor(savedColor);
     colorPicker.value = savedColor;
   }
   
-  // При настанні події focus змінюємо колір
+  // Виконуємо зміну на focus і input для миттєвого ефекту
   colorPicker.addEventListener('focus', function() {
     const color = this.value;
     applyBorderColor(color);
     localStorage.setItem('borderColor', color);
   });
   
-  // Також при зміні кольору
   colorPicker.addEventListener('input', function() {
     const color = this.value;
     applyBorderColor(color);
@@ -161,7 +148,6 @@ function setupBorderColorChanger() {
 }
 
 function applyBorderColor(color) {
-  // Застосовуємо колір до всіх номерних блоків (1-6)
   const blocks = ['.navbar', '.item2', '.item3', '.item4', '.item5', '.item6'];
   blocks.forEach(selector => {
     const elements = document.querySelectorAll(selector);
@@ -173,25 +159,20 @@ function applyBorderColor(color) {
 
 // ============================================
 // ЗАВДАННЯ 5: Додавання зображень
-// Блок 1 = navbar, Блок 4 = item4, Блок 5 = item5, Блок у = item6
 // ============================================
 function setupImageAdder() {
-  const itemY = document.querySelector('.item6'); // Блок "у"
+  const itemY = document.querySelector('.item6');
   if (!itemY) return;
   
-  // а) Додаємо обробник виділення тексту в блоці "у"
   itemY.addEventListener('mouseup', function() {
-    const selection = window.getSelection().toString();
-    if (selection.length > 0) {
+    if (window.getSelection().toString().length > 0) {
       showImageForm();
     }
   });
   
-  // Для мобільних пристроїв
   itemY.addEventListener('touchend', function() {
     setTimeout(() => {
-      const selection = window.getSelection().toString();
-      if (selection.length > 0) {
+      if (window.getSelection().toString().length > 0) {
         showImageForm();
       }
     }, 100);
@@ -199,13 +180,11 @@ function setupImageAdder() {
 }
 
 function showImageForm() {
-  // Перевіряємо, чи форма вже існує
   if (document.getElementById('imageForm')) return;
   
   const item5 = document.querySelector('.item5');
   if (!item5) return;
   
-  // а) Форма появляється в блоці 5 одразу після наявного контенту
   const formDiv = document.createElement('div');
   formDiv.id = 'imageForm';
   formDiv.style.marginTop = '25px';
@@ -244,17 +223,9 @@ function showImageForm() {
   
   item5.appendChild(formDiv);
   
-  // Кнопка 1: Додати зображення в блок 1 (тимчасово, без збереження)
   document.getElementById('addToBlock1Btn').addEventListener('click', addImageToBlock1Temp);
-  
-  // в) Кнопка 2: Зберегти в localStorage + додати в блок 4
-  document.getElementById('saveToBlock4Btn').addEventListener('click', saveImageToLocalStorageAndBlock4);
-  
-  // г) Кнопка 3: Видалити з localStorage і з блоку 1
+  document.getElementById('saveToBlock4Btn').addEventListener('click', saveBlock1ImagesToLocalStorageAndBlock4);
   document.getElementById('clearFromBlock1Btn').addEventListener('click', clearImagesFromBlock1);
-  
-  // Завантажуємо збережені зображення з localStorage
-  loadImagesFromLocalStorage();
 }
 
 // Кнопка 1: Додати зображення тимчасово в блок 1
@@ -276,56 +247,59 @@ function addImageToBlock1Temp() {
   
   displayImageInBlock1(tempImage);
   
-  // Очищаємо форму
   document.getElementById('imageUrl').value = '';
   document.getElementById('imageAlt').value = '';
   
   alert('Зображення додано в блок 1 (тимчасово)');
 }
 
-// в) Кнопка 2: Зберегти в localStorage + додати в блок 4
-function saveImageToLocalStorageAndBlock4() {
-  const url = document.getElementById('imageUrl').value.trim();
-  const alt = document.getElementById('imageAlt').value.trim();
+// Нова реалізація кнопки 2: Зберігаємо З ВСІХ зображень блоку 1 у localStorage + додаємо в блок 4
+function saveBlock1ImagesToLocalStorageAndBlock4() {
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) return;
   
-  if (!url) {
-    alert('Будь ласка, введіть URL зображення!');
+  // Витягуємо ВСІ зображення, додані у блок 1, які мають data-image-id
+  const imagesInBlock1 = navbar.querySelectorAll('.added-image-block1 img');
+  if (imagesInBlock1.length === 0) {
+    alert('У блоці 1 немає зображень для збереження.');
     return;
   }
   
-  // б) Кількість зображень необмежена
-  let images = JSON.parse(localStorage.getItem('addedImages') || '[]');
+  // Формуємо масив об'єктів {url, alt, id}
+  const imagesData = [];
+  imagesInBlock1.forEach(img => {
+    const parentDiv = img.parentElement;
+    const imageId = parentDiv.dataset.imageId;
+    if (imageId) {
+      imagesData.push({
+        url: img.src,
+        alt: img.alt || '',
+        id: imageId
+      });
+    }
+  });
   
-  const newImage = { 
-    url, 
-    alt: alt || 'Збережене зображення',
-    id: Date.now()
-  };
+  // Зберігаємо у localStorage (перезаписуємо)
+  localStorage.setItem('addedImages', JSON.stringify(imagesData));
   
-  images.push(newImage);
+  // Очищаємо блок 4 перед додаванням
+  const item4 = document.querySelector('.item4');
+  if (item4) {
+    // Видаляємо всі зображення, додані раніше
+    const oldImages = item4.querySelectorAll('.added-image-block4');
+    oldImages.forEach(e => e.remove());
+    
+    // Додаємо оновлені зображення в блок 4
+    imagesData.forEach(imgData => displayImageInBlock4(imgData));
+  }
   
-  // в) Зберігаємо в localStorage
-  localStorage.setItem('addedImages', JSON.stringify(images));
-  
-  // Додаємо зображення в кінець початкового вмісту блоку 4
-  displayImageInBlock4(newImage);
-  
-  // Також додаємо в блок 1
-  displayImageInBlock1(newImage);
-  
-  // Очищаємо форму
-  document.getElementById('imageUrl').value = '';
-  document.getElementById('imageAlt').value = '';
-  
-  alert('Зображення збережено в localStorage та додано в блок 4!');
+  alert('Усі зображення з блоку 1 збережено в localStorage та додано у блок 4!');
 }
 
-// г) Кнопка 3: Видалити всі зображення з localStorage і блоку 1
+// Кнопка 3: Видаляємо всі зображення з localStorage та з блоку 1
 function clearImagesFromBlock1() {
-  // Видаляємо з localStorage
   localStorage.removeItem('addedImages');
   
-  // г) Видаляємо зображення з блоку 1 без перезавантаження
   const navbar = document.querySelector('.navbar');
   if (navbar) {
     const addedImages = navbar.querySelectorAll('.added-image-block1');
@@ -339,7 +313,6 @@ function displayImageInBlock1(imageData) {
   const navbar = document.querySelector('.navbar');
   if (!navbar) return;
   
-  // Перевіряємо, чи зображення вже не додане
   const existing = navbar.querySelector(`[data-image-id="${imageData.id}"]`);
   if (existing) return;
   
@@ -369,7 +342,6 @@ function displayImageInBlock4(imageData) {
   const item4 = document.querySelector('.item4');
   if (!item4) return;
   
-  // Перевіряємо, чи зображення вже не додане
   const existing = item4.querySelector(`[data-image-id="${imageData.id}"]`);
   if (existing) return;
   
@@ -395,19 +367,16 @@ function displayImageInBlock4(imageData) {
   item4.appendChild(imgDiv);
 }
 
+// Завантажуємо всі зображення при ініціалізації
 function loadImagesFromLocalStorage() {
   const images = JSON.parse(localStorage.getItem('addedImages') || '[]');
   
-  // Завантажуємо збережені зображення в обидва блоки
   images.forEach(img => {
-    // Додаємо в блок 4
     const item4 = document.querySelector('.item4');
     const existingInBlock4 = item4?.querySelector(`[data-image-id="${img.id}"]`);
     if (!existingInBlock4) {
       displayImageInBlock4(img);
     }
-    
-    // Додаємо в блок 1
     displayImageInBlock1(img);
   });
 }
@@ -416,30 +385,21 @@ function loadImagesFromLocalStorage() {
 // ІНІЦІАЛІЗАЦІЯ
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-  // Завдання 1: Міняємо місцями тексти
   swapTexts();
-  
-  // Завдання 2: Обчислюємо площу ромба
   calculateRhombusArea();
   
-  // Завдання 3: Перевіряємо cookies і створюємо форму
   const hasCookies = checkCookies();
   if (!hasCookies) {
     createMinMaxForm();
   }
   
-  // Завдання 4: Налаштовуємо зміну кольору рамок
   setupBorderColorChanger();
   
-  // Застосовуємо збережений колір рамок при завантаженні
   const savedColor = localStorage.getItem('borderColor');
   if (savedColor) {
     applyBorderColor(savedColor);
   }
   
-  // Завдання 5: Налаштовуємо додавання зображень
   setupImageAdder();
-  
-  // Завантажуємо збережені зображення при завантаженні сторінки
   loadImagesFromLocalStorage();
 });
